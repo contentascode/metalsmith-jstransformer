@@ -24,7 +24,7 @@ function getTransformer (name) {
 module.exports = function (opts) {
   // Prepare the options.
   opts = opts || {}
-  opts.pattern = opts.pattern || '[!_]*'
+  opts.pattern = opts.pattern || '!_**/*'
 
   // Execute the plugin.
   return function (files, metalsmith, done) {
@@ -77,6 +77,7 @@ module.exports = function (opts) {
      * Rename the given file to its desired new name.
      */
     function renameFile (file, done) {
+      console.log(file)
       var filename = file
       // Check if there is a potential filepath change.
       if (files[file].jstransformer_filepath) {
@@ -98,7 +99,7 @@ module.exports = function (opts) {
     }
 
     // Filter out all the files we are to ignore.
-    var results = match(Object.keys(files), opts.pattern, { matchBase: true })
+    var results = match(Object.keys(files), opts.pattern)
 
     // Process each file.
     async.map(results, processFile, function (err) {
